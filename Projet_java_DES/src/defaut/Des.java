@@ -46,10 +46,10 @@ public class Des {
 		
 	}
 	
-	public Byte stringToBits(String message) {
+	public int stringToBits(String message) {
 		
 		
-		return message.getBytes()[0];
+		return message.getBytes()[0].intValue();
 		
 	}
 	
