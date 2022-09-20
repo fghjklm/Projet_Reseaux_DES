@@ -65,8 +65,9 @@ public class TestDes {
 		*/
 		
 		System.out.println(bloc.equals(bloc));
-		
-
+        
+        
+        
 	}
 
 }
