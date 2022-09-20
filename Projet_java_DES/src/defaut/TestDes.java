@@ -6,6 +6,45 @@ public class TestDes {
 		Des des = new Des();
 		System.out.println(des.bitsToString(des.stringToBits("oui é non")));
 		
+		
+		
+		
+		//test de GenerePermutation
+		int[] testGenerePermutation=des.generePermutation(5);
+		for(int i=0;i<testGenerePermutation.length;i++) {
+			System.out.print(testGenerePermutation[i]);
+			System.out.print(", ");
+		}
+		System.out.println();
+		System.out.println(testGenerePermutation.length);
+
+		
+		
+		
+		//test de permutation
+		int tailleTest=5;
+		int[] bloc= new int[tailleTest];
+		for(int i=0;i<tailleTest;i++) {
+			bloc[i]=i;
+		}
+		int[] tab_permutation= {3,5,2,1,4};
+		
+		int[] testPermutation=des.permutation(tab_permutation, bloc);
+		for(int i=0;i<testPermutation.length;i++) {
+			System.out.print(testPermutation[i]);
+			System.out.print(", ");
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 }

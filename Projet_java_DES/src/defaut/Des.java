@@ -3,6 +3,7 @@ package defaut;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Des {
@@ -92,7 +93,35 @@ public class Des {
 	}
 
 	
+	public int[] generePermutation (int taille) {
+		Random rnd=new Random();
+		int[] permutation= new int[taille];
+		HashSet<Integer> dejaPlace=new HashSet<Integer>();
+		int indice=0;
+		
+		for (int i=0; i<taille;i++) {
+			int bloc;
+			do {
+				bloc=rnd.nextInt(taille)+1;
+			}while (dejaPlace.contains(bloc));
+			
+			dejaPlace.add(bloc);
+			permutation[indice]=bloc;
+			indice++;
+		}
+		
+		return permutation;
+	}
 	
+	
+	int[] permutation(int[] tab_permutation, int[] bloc) {
+		int[] blocPermute=new int[bloc.length];
+		for (int i=0;i<bloc.length;i++) {
+			blocPermute[i]=bloc[tab_permutation[i]-1];
+		}
+		
+		return blocPermute;
+	}
 	
 	
 	
