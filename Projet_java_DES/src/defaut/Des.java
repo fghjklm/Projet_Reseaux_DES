@@ -51,29 +51,46 @@ public class Des {
 	
 	public int[] stringToBits(String message) {
 		
-		byte[] tableau = message.getBytes(StandardCharsets.UTF_8);
+		byte[] tableau = message.getBytes(StandardCharsets.US_ASCII);
 		int[] tab_int = new int[tableau.length];
 		for(int i = 0; i<tableau.length; i++ ) {
 			tab_int[i] = (int)tableau[i];
 		}
-		for(int i : tab_int) {
+		int[] tab_binaire = new int[tab_int.length*8];
+		for(int i =0; i < tab_int.length; i++) {
+			int entier = tab_int[i];
 			for(int j = 7; j >=0; j--) {
-				if (i-Math.pow(2,  j) > 0){
-					i = i-j;
-					
+				if (entier-Math.pow(2,  j) >= 0){
+					entier = (int) (entier-Math.pow(2, j));
+					tab_binaire[8*i + 7-j] = 1;	
 					
 				}
+				else {
+					tab_binaire[8*i+7-j] = 0;
+				}
 			}
+			assert(entier ==0);
 		}
 		
-		return tab_int;
 		
-		
-		
-		
-		
+		return tab_binaire;
 	}
-	
+	public String bitsToString(int[] blocs) {
+		assert(blocs.length%8 == 0);
+		int [] tab_int = new int[blocs.length/8];
+		for(int i = 0; i < tab_int.length; i++) {
+			int entier = 0;
+			for(int j = 0; j < 8; j++) {
+				entier += Math.pow(2,7-j) *blocs[8*i + j];		
+			}
+			tab_int[i] = entier;
+		}
+		byte[] tableau = new byte[tab_int.length];
+		for(int i = 0; i < tab_int.length; i++) {
+			tableau[i] = (byte)tab_int[i];
+		}
+		return new String(tableau, StandardCharsets.US_ASCII);
+	}
 
 	
 	public int[] generePermutation (int taille) {
