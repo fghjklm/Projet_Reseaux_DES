@@ -107,6 +107,13 @@ public class Des {
 	}
 	
 	
-	
+	int[] invPermutation(int[] tab_permutation, int[] bloc) {
+		int[] blocPermute=new int[bloc.length];
+		for (int i=0;i<bloc.length;i++) {
+			blocPermute[tab_permutation[i]-1]=bloc[i];
+		}
+		
+		return blocPermute;
+	}
 
 }
