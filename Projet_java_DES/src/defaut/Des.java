@@ -1,5 +1,7 @@
 package defaut;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,10 +48,28 @@ public class Des {
 		
 	}
 	
-	public int stringToBits(String message) {
+	public int[] stringToBits(String message) {
+		
+		byte[] tableau = message.getBytes(StandardCharsets.UTF_8);
+		int[] tab_int = new int[tableau.length];
+		for(int i = 0; i<tableau.length; i++ ) {
+			tab_int[i] = (int)tableau[i];
+		}
+		for(int i : tab_int) {
+			for(int j = 7; j >=0; j--) {
+				if (i-Math.pow(2,  j) > 0){
+					i = i-j;
+					
+					
+				}
+			}
+		}
+		
+		return tab_int;
 		
 		
-		return message.getBytes()[0].intValue();
+		
+		
 		
 	}
 	
