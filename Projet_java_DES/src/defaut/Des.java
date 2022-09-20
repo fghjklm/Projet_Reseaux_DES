@@ -1,6 +1,5 @@
 package defaut;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,14 +34,14 @@ public class Des {
 		24, 25, 26, 27, 28, 29,
 		28, 29, 30, 31, 32, 1};
 	
-	private ArrayList<Integer> masterKey;
+	private int[] masterKey;
 	private ArrayList<ArrayList<Integer>> tab_cles;
 	
 	public Des(){
-		this.masterKey = new ArrayList<Integer>();
+		this.masterKey = new int[64];
 		Random r = new Random();
-		for (int i = 0; i< 64; i++) {
-			this.masterKey.add(r.nextInt(2));
+		for (int i = 0; i< this.masterKey.length; i++) {
+			this.masterKey[i]=r.nextInt(2);
 		}
 		this.tab_cles = new ArrayList<ArrayList<Integer>>();
 		
@@ -170,5 +169,27 @@ public class Des {
 	
 	
 	
+	int[] invPermutation(int[] tab_permutation, int[] bloc) {
+		int[] blocPermute=new int[bloc.length];
+		for (int i=0;i<bloc.length;i++) {
+			blocPermute[tab_permutation[i]-1]=bloc[i];
+		}
+		
+		return blocPermute;
+	}
 	
+
+	int[] genereCle(int ronde) {
+		int[] cle=new int[64];
+		int[] permutation=this.generePermutation(64);
+		cle=this.permutation(permutation, this.masterKey);
+		//nbr de ronde commence à 1!!
+		for (int i=0;i<this.masterKey.length;i++) {
+			
+		}
+		
+		
+		return cle;
+	}
+
 }
