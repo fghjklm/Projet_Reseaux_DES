@@ -114,7 +114,7 @@ public class Des {
 	}
 	
 	
-	int[] permutation(int[] tab_permutation, int[] bloc) {
+	public int[] permutation(int[] tab_permutation, int[] bloc) {
 		int[] blocPermute=new int[bloc.length];
 		for (int i=0;i<bloc.length;i++) {
 			blocPermute[i]=bloc[tab_permutation[i]-1];
@@ -123,7 +123,52 @@ public class Des {
 		return blocPermute;
 	}
 	
+	public int [][] decoupage (int[] bloc, int nbBlocs){
+		assert(bloc.length%nbBlocs == 0);
+		int[][] découpage = new int[nbBlocs][bloc.length/nbBlocs];
+		for(int i = 0; i < nbBlocs; i++) {
+			int[] petite_decoupe = new int[bloc.length/nbBlocs];
+			for(int j = 0; j < bloc.length/nbBlocs; j++ ) {
+				petite_decoupe[j] = bloc[i*bloc.length/nbBlocs + j];
+			}
+			découpage[i] = petite_decoupe;
+			
+		}
+		return découpage;
+		
+	}
+	
+	public int[] recollage_bloc(int[][] blocs) {
+		int[] recollage = new int[blocs.length*blocs[0].length];
+		for(int i = 0; i < blocs.length;i++) {
+			for(int j = 0; j < blocs[i].length; j++) {
+				recollage[i*blocs[i].length + j] = blocs[i][j];
+			}
+		}
+		
+		return recollage;
+		
+	}
+	
+	public void afficher_tab(int[] tab) {
+		String s = "[";
+		for(int i : tab) {
+			s += String.valueOf(i) + ", ";
+			
+		}
+		s += "]";
+		System.out.println(s);
+	}
+	
+	public void afficher_tab_tab(int[][] tab_tab) {
+		System.out.println("[");
+		for(int[] tab : tab_tab) {
+			afficher_tab(tab);
+		}
+		System.out.println("]");
+	}
 	
 	
-
+	
+	
 }
