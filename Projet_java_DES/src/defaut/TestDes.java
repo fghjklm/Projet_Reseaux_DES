@@ -4,11 +4,10 @@ public class TestDes {
 	
 	public static void main(String[] args) {
 		Des des = new Des();
-		System.out.println(des.bitsToString(des.stringToBits("oui é non")));
-		
-		
-		
-		
+		String[] chaines = {"oihvonz", " akvn  anfd jbj", "ùpvnaioe1654ouvd", "pjvoqnv3684<354g<eg"};
+		for(String s : chaines) {
+			assert(des.bitsToString(des.stringToBits(s)) == s);
+		}
 		//test de GenerePermutation
 		int[] testGenerePermutation=des.generePermutation(5);
 		for(int i=0;i<testGenerePermutation.length;i++) {
