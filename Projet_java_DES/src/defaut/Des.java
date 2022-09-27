@@ -198,7 +198,7 @@ public class Des {
 		}
 		int [] recollage = this.recollage_bloc(découpe);
 		int[] permutation_48=this.generePermutation(48);
-		int [] cle_48=this.permutation(permutation_56, recollage);
+		int [] cle_48=this.permutation(permutation_48, recollage);
 		return cle_48;
 	}
 	
