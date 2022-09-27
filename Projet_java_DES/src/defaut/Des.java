@@ -20,11 +20,11 @@ public class Des {
 		59, 51, 43, 35, 27, 19, 11, 3,
 		61, 53, 45, 37, 29, 21, 13, 5,
 		63, 55, 47, 39, 31, 23, 15, 7};
-	private static int[][] S = {{14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7}, 
+	private static int[][] s = {{14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7}, 
 						{0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8},
 						{4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0},
 						{15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13}};
-	private static int[] E = 
+	private static int[] e = 
 		{32, 1, 2 ,3, 4, 5, 
 		4, 5, 6, 7, 8, 9, 
 		8, 9, 10, 11, 12 ,13,
@@ -218,5 +218,36 @@ public class Des {
 		return tab_xor;
 		
 	}
+	
+	int [] fonction_S(int[] tab) {
+		int lig = tab[0]*2 + tab[5];
+		int col = tab[1]*8+tab[2]*4+tab[3]*2 +tab[4];
+		int valeur = Des.s[lig][col];
+		int[] nouveau_tab = new int[4];
+		for(int i =3; i >=0; i--) {
+			if (valeur-Math.pow(2, i)>=0) {
+				valeur -= Math.pow(2, i);
+				nouveau_tab[3-i] = 1;
+			}
+			else {
+				nouveau_tab[3-i] = 0;
+			}
+		}
+		return nouveau_tab;
+		
+	}
+	
+	int[] fonction_F(int[] uneCle, int[] unD) {
+		int[] e_n = this.permutation(Des.e, unD);
+		int[] d_n_etoile = this.xor(e_n, uneCle);
+		int[][] decoupe = this.decoupage(d_n_etoile, 8);
+		for(int[] bloc: decoupe) {
+			bloc = fonction_S(bloc);
+		}
+		int[] recolle = this.recollage_bloc(decoupe); 
+		return recolle;
+	}
+	
+	
 
 }
