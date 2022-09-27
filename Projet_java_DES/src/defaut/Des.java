@@ -178,6 +178,16 @@ public class Des {
 		return blocPermute;
 	}
 	
+	int[] decalle_gauche(int[] bloc, int nbCran) {
+		
+		int[] decalle=new int[bloc.length];
+		
+		for (int i=0; i<bloc.length;i++) {
+			decalle[Math.floorMod(i-nbCran, bloc.length)]=bloc[i];
+		}
+		return decalle;
+	}
+	
 
 	int[] genereCle(int ronde) {
 		int[] cle=new int[64];
