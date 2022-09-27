@@ -35,7 +35,7 @@ public class Des {
 		28, 29, 30, 31, 32, 1};
 	
 	private int[] masterKey;
-	private ArrayList<ArrayList<Integer>> tab_cles;
+	private ArrayList<int[]> tab_cles;
 	
 	public Des(){
 		this.masterKey = new int[64];
@@ -43,7 +43,7 @@ public class Des {
 		for (int i = 0; i< this.masterKey.length; i++) {
 			this.masterKey[i]=r.nextInt(2);
 		}
-		this.tab_cles = new ArrayList<ArrayList<Integer>>();
+		this.tab_cles = new ArrayList<int[]>();
 		
 		
 	}
@@ -138,7 +138,11 @@ public class Des {
 	}
 	
 	public int[] recollage_bloc(int[][] blocs) {
-		int[] recollage = new int[blocs.length*blocs[0].length];
+		int taille = 0;
+		for(int[] bloc : blocs) {
+			taille+= bloc.length;
+		}
+		int[] recollage = new int[taille];
 		for(int i = 0; i < blocs.length;i++) {
 			for(int j = 0; j < blocs[i].length; j++) {
 				recollage[i*blocs[i].length + j] = blocs[i][j];
@@ -248,6 +252,47 @@ public class Des {
 		return recolle;
 	}
 	
-	
+	int [] crypte( String message) {
+		int[] texte_binaire = this.stringToBits(message);
+		int taille = texte_binaire.length;
+		int nb_bloc = taille/Des.taille_bloc;
+		int [] tab_a_crypte = new int[nb_bloc*Des.taille_bloc];
+		int[] tab_non_crypte = new int[taille-nb_bloc*Des.taille_bloc];
+		for(int i = 0; i <taille; i++) {
+			if ( i < nb_bloc*Des.taille_bloc) {
+				tab_a_crypte[i] = texte_binaire[i];
+			}
+			else {
+				tab_non_crypte[i-nb_bloc*Des.taille_bloc] = texte_binaire[i];
+			}
+			
+		} /// séparation en un bloc divisible par 64 et un bloc restant, ce dernier n'étant pas crypté
+		int[][] decoupe = this.decoupage(tab_a_crypte, nb_bloc);
+		for(int[] bloc : decoupe) {
+			int[] perm = this.generePermutation(Des.taille_bloc);
+			this.permutation(perm, bloc);
+			int[][] decoupe_deux = this.decoupage(bloc, 2);
+			int[] g = decoupe_deux[0];
+			int[] d = decoupe_deux[1];
+			for(int i = 0; i < Des.nb_ronde; i++) {
+				int[] cle = this.genereCle(i+1);
+				this.tab_cles.add(cle);
+				int[] d_save = d;
+				d = this.xor(g, this.fonction_F(cle, d));
+				g = d_save;
+			}
+			decoupe_deux[0] = g;
+			decoupe_deux[1] = d;
+			bloc = this.recollage_bloc(decoupe_deux);
+			this.invPermutation(perm, bloc);
+			
+		}
+		
+		int[] recolle = this.recollage_bloc(decoupe);
+		
+		
+		return masterKey;
+		
+	}
 
 }
