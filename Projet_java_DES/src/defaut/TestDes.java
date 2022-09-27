@@ -76,6 +76,11 @@ public class TestDes {
 		System.out.println(bloc.equals(bloc));
         
         
+		
+		//test decale-gauche:
+		int[] blocs= {1,2,3,4,5,6,8,56,12,0,7,8,9,10};
+		int[] decalle=des.decalle_gauche(blocs, 25);
+		des.afficher_tab(decalle);
         
 	}
 
