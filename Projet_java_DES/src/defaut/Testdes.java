@@ -1,6 +1,6 @@
 package defaut;
 
-public class TestDes {
+public class Testdes {
 	
 	public static void main(String[] args) {
 		Des des = new Des();
