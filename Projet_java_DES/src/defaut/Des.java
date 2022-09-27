@@ -180,16 +180,16 @@ public class Des {
 	
 
 	int[] genereCle(int ronde) {
-		int[] cle=new int[64];
-		int[] permutation=this.generePermutation(64);
-		cle=this.permutation(permutation, this.masterKey);
-		//nbr de ronde commence à 1!!
-		for (int i=0;i<this.masterKey.length;i++) {
-			
+		int[] permutation_56=this.generePermutation(56);
+		int [] cle_56=this.permutation(permutation_56, this.masterKey);
+		int [][] découpe = this.decoupage(cle_56, 2);
+		for (int [] bloc : découpe) {
+			this.decalle_gauche(bloc, Des.tab_decalage[ronde-1]);
 		}
-		
-		
-		return cle;
+		int [] recollage = this.recollage_bloc(découpe);
+		int[] permutation_48=this.generePermutation(48);
+		int [] cle_48=this.permutation(permutation_56, recollage);
+		return cle_48;
 	}
 	
 	int[] xor( int[] tab1, int[] tab2) {
