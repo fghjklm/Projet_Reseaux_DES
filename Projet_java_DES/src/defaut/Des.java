@@ -202,6 +202,8 @@ public class Des {
 		return cle;
 	}
 	
+	
+	
 	int[] xor( int[] tab1, int[] tab2) {
 		int[] tab_xor = new int[tab1.length]; 
 		for(int i =0; i < tab1.length; i++) {
