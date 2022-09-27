@@ -289,9 +289,12 @@ public class Des {
 		}
 		
 		int[] recolle = this.recollage_bloc(decoupe);
+		int[][] decoupe_total = new int[2][];
+		decoupe_total[0] = recolle;
+		decoupe_total[1] = tab_non_crypte;
+		int [] recolle_total = this.recollage_bloc(decoupe_total);		
 		
-		
-		return masterKey;
+		return recolle_total;
 		
 	}
 
