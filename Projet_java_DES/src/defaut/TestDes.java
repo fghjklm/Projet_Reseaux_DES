@@ -2,7 +2,12 @@ package defaut;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,10 +17,12 @@ import org.junit.Test;
 public class TestDes {
 	
 	Des des;
-
+	Random rnd;
+	
 	@Before
 	public void setUp() throws Exception {
 		des = new Des();
+		rnd=new Random();
 
 		//test de permutation et invPermutation
 		int tailleTest=64;
@@ -65,13 +72,13 @@ public class TestDes {
 		}
 		System.out.println();
 		*/
-		System.out.println(bloc.equals(bloc));
+		//System.out.println(bloc.equals(bloc));
         
 
 		//test decale-gauche:
 		int[] blocs= {1,2,3,4,5,6,8,56,12,0,7,8,9,10};
 		int[] decalle=des.decalle_gauche(blocs, 25);
-		des.afficher_tab(decalle);
+		//des.afficher_tab(decalle);
 	}
 	
 	@After
@@ -94,25 +101,20 @@ public class TestDes {
 	@Test
 	public void testGenerePermutation() {
 		
-		for (int i=1; i<100;i++) {
-			//List<Integer> permut= Arrays.asList(des.generePermutation(i));
-			for (int j=1; j<i+1;j++) {
-				assertTrue(true);
+		for (int i=0; i<100;i++) {
+			int taille=rnd.nextInt(1000);
+			int[] permut=des.generePermutation(taille);
+
+			assertTrue(permut.length==taille);
+			
+			for (int j=1; j<taille+1;j++) {
+				Boolean jPresent=false;
+				for (int bloc : permut) {
+					if (bloc==j) { jPresent=true;};
+				}
+				assertTrue(jPresent);
 			}
 		}
-		
-		
-		int[] testGenerePermutation=des.generePermutation(5);
-		
-		//for (int i=1, )
-				/*
-				for(int i=0;i<testGenerePermutation.length;i++) {
-					System.out.print(testGenerePermutation[i]);
-					System.out.print(", ");
-				}
-				System.out.println();
-				System.out.println(testGenerePermutation.length);
-				*/
 	}
 	
 	@Test
