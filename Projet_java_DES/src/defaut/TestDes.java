@@ -65,6 +65,11 @@ public class TestDes {
 	
 	@Test
 	public void testPermutation_testInvPermutation() {
+		
+		//rajouter les tests pour 2 trucs pas de la même taille, bloc de 64 et permut de 58
+		//est-ce que c'est valide si on teste que le résultat de l'un est le même que le début??
+		
+		
 		int taille=64;
 		
 		for (int i=0;i<100;i++) {
@@ -85,6 +90,9 @@ public class TestDes {
 	
 	@Test
 	public void testDecoupage_testRecollageBloc() {
+		//tester avec des blocs de taille différente
+		
+		
 		int[] tailles= {48,64};
 		
 		for (int taille : tailles) {
@@ -124,42 +132,54 @@ public class TestDes {
 		
 		for (int j=0; j<100;j++) {
 			int decallage=rnd.nextInt(28)+1;
-			//choisir un décalage en random
-			//décaler
 			
-			//créer le bloc décallé en profitant du fait qu'on sais de quoi il est rempli
+			
+			int[] blocDecalle=des.decalle_gauche(bloc, decallage);
+			
 			int[] verif=new int[28];
-			for (int k=0; k<28;k++) {
-				verif[k]=(k-decallage);
+			for (int k=decallage; k<28;k++) {
+				verif[k-decallage]=bloc[k];
+			}
+			for (int l=0;l<decallage;l++) {
+				verif[l+bloc.length-decallage]=bloc[l];
 			}
 			
-			//tester que les deux sont égaux
+			assertTrue(Arrays.equals(blocDecalle, verif));
 			
-			
-			
+			//pas sûr que ça soit bon, peut être faire des tests unitaires!!!! car là j'utilise juste deux méthodes pour décaller
+			//et je vérifie juste que ces deux méthodes renvoient le même résultat, pas que c'est bien décallé (même si moi visuellement je le vois)
 		}
-		
-		
-		
-		int[] blocs= {1,2,3,4,5,6,8,56,12,0,7,8,9,10};
-		int[] decalle=des.decalle_gauche(blocs, 25);
-		
-		
-		//des.afficher_tab(decalle);
 	}
 	
 	@Test
 	public void testXor() {
-		//fail("Not yet implemented");
+		//tests unitaires à la piccinini car sinon on doit juste recoder la même chose que l'intérieur de la méthode
 	}
 	
 	@Test
 	public void testGenereCle() {
-		//fail("Not yet implemented");
+		//comment on peut la vérifier elle???
 	}
 	
 	@Test
 	public void testFonction_S() {
+		/*
+		int valeur=14;
+		int[] nouveau_tab=new int[4];
+		
+		
+		
+		String valeurBinaire= Integer.toBinaryString(valeur);
+		
+		for (int i=0; i<nouveau_tab.length;i++) {
+			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
+		}
+		
+		des.afficher_tab(nouveau_tab);
+		*/
+		
+		
+		
 		//fail("Not yet implemented");
 	}
 	
