@@ -273,10 +273,10 @@ public class Des {
 		int[] nouveau_tab = new int[4];
 		
 		String valeurBinaire= Integer.toBinaryString(valeur);
-		do {
+		while(valeurBinaire.length()<4){
 			valeurBinaire = "0"+valeurBinaire;
-			
-		}while(valeurBinaire.length()<4);
+		}
+		System.out.println(valeurBinaire);
 		for (int i=0; i<nouveau_tab.length;i++) {
 			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
