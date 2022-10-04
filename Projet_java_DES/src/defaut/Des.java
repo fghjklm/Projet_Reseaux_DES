@@ -271,15 +271,13 @@ public class Des {
 		int col = tab[1]*8+tab[2]*4+tab[3]*2 +tab[4];
 		int valeur = Des.s[lig][col];
 		int[] nouveau_tab = new int[4];
-		for(int i =3; i >=0; i--) {
-			if (valeur-Math.pow(2, i)>=0) {
-				valeur -= Math.pow(2, i);
-				nouveau_tab[3-i] = 1;
-			}
-			else {
-				nouveau_tab[3-i] = 0;
-			}
+		
+		String valeurBinaire= Integer.toBinaryString(valeur);
+		
+		for (int i=0; i<nouveau_tab.length;i++) {
+			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
+		
 		return nouveau_tab;
 		
 	}
