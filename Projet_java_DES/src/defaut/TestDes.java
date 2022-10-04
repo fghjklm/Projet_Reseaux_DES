@@ -170,7 +170,12 @@ public class TestDes {
 	
 	@Test
 	public void testCrypte_testDecrypte() {
-		//fail("Not yet implemented");
+		String s = "?j'ai trés tres bien mange aujourdhui, et vous ? hmmm";
+		int[] crypte = des.crypte(s);
+		String decrypte = des.decrypte(crypte);
+		System.out.println(des.bitsToString(des.stringToBits(s)));
+		System.out.println(decrypte);
+		
 	}
 	
 }
