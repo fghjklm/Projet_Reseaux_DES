@@ -9,7 +9,7 @@ public class Des {
 	
 	private static int taille_bloc = 64;
 	private static int taille_sous_bloc = 32;
-	private static int nb_ronde = 1;
+	private static int nb_ronde = 16;
 	private static int[] tab_decalage = {1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 1};
 	private static int[] perm_initiale = 
 		{58, 50, 42, 34, 26, 18, 10, 2,
@@ -20,12 +20,8 @@ public class Des {
 		59, 51, 43, 35, 27, 19, 11, 3,
 		61, 53, 45, 37, 29, 21, 13, 5,
 		63, 55, 47, 39, 31, 23, 15, 7};
-	private static int[][] s = 
-
-	{{14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7}, 
-	 {0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8},
-	 {4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0},
-	 {15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13}};
+	private static int[][] s;
+	private static int[][][] s_tab;
 
 	private static int[] e = 
 		{32, 1, 2 ,3, 4, 5, 
@@ -46,30 +42,14 @@ public class Des {
 		for (int i = 0; i< this.masterKey.length; i++) {
 			this.masterKey[i]=r.nextInt(2);
 		}
-		this.s = this.creerS();
 		this.tab_cles = new ArrayList<int[]>();
+		Des.s = this.creerS();
+		Des.s_tab = new int[nb_ronde][][];
 		
 		
 	}
 	
 	int[][] creerS(){
-		/*
-		Random rnd=new Random();
-		int[] permutation= new int[taille];
-		HashSet<Integer> dejaPlace=new HashSet<Integer>();
-		int indice=0;
-		
-		for (int i=0; i<taille;i++) {
-			int bloc;
-			do {
-				bloc=rnd.nextInt(taille)+1;
-			}while (dejaPlace.contains(bloc));
-			
-			dejaPlace.add(bloc);
-			permutation[indice]=bloc;
-			indice++;
-		}
-		*/
 		Random rnd=new Random();
 		int[][] s = new int[4][16];
 		HashSet<Integer> dejaPlace;
@@ -276,7 +256,6 @@ public class Des {
 		while(valeurBinaire.length()<4){
 			valeurBinaire = "0"+valeurBinaire;
 		}
-		System.out.println(valeurBinaire);
 		for (int i=0; i<nouveau_tab.length;i++) {
 			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
@@ -286,14 +265,16 @@ public class Des {
 	}
 	
 	int[] fonction_F(int[] uneCle, int[] unD) {
+	
 		int[] e_n = this.permutation(Des.e, unD);
 		int[] d_n_etoile = this.xor(e_n, uneCle);
 		int[][] decoupe = this.decoupage(d_n_etoile, 8);
 		for(int i = 0; i < decoupe.length; i++) {
-			decoupe[i] = fonction_S(decoupe[i]);
+			decoupe[i] = fonction_S(decoupe[i]);	
 		}
 		int[] recolle = this.recollage_bloc(decoupe); 
 		return recolle;
+		
 	}
 	
 	int [] crypte( String message) {
@@ -316,24 +297,30 @@ public class Des {
 			int[][] decoupe = this.decoupage(tab_a_crypte, nb_bloc);
 			for(int k = 0; k < decoupe.length; k++) {
 				int[] bloc = decoupe[k];
-				int[] perm = Des.perm_initiale;
-				this.tab_cles.add(perm);
-				this.permutation(perm, bloc);
-				int[][] decoupe_deux = this.decoupage(bloc, 2);
-				int[] g = decoupe_deux[0];
-				int[] d = decoupe_deux[1];
-				for(int i = 0; i < Des.nb_ronde; i++) {
-					int[] cle = this.genereCle(i+1);
-					this.tab_cles.add(cle);
-					int[] d_save = d;
-					d = this.xor(g, this.fonction_F(cle, d));
-					g = d_save;
+				if(bloc.length == 64) {
+					int[] perm = Des.perm_initiale;
+					bloc = this.permutation(perm, bloc);
+					int[][] decoupe_deux = this.decoupage(bloc, 2);
+					int[] g = decoupe_deux[0];
+					int[] d = decoupe_deux[1];
+					///
+					for(int i = 0; i < Des.nb_ronde; i++) {
+						int[] cle = this.genereCle(i+1);
+						this.tab_cles.add(cle);
+						int[] d_save = d;
+						d = this.xor(g, this.fonction_F(cle, d));
+						g = d_save;
+					}
+					///
+					decoupe_deux[0] = g;
+					decoupe_deux[1] = d;
+					bloc = this.recollage_bloc(decoupe_deux);;
+					bloc = this.invPermutation(perm, bloc);
+					decoupe[k] = bloc;
 				}
-				decoupe_deux[0] = g;
-				decoupe_deux[1] = d;
-				bloc = this.recollage_bloc(decoupe_deux);;
-				this.invPermutation(perm, bloc);
-				decoupe[k] = bloc;
+				else {
+					System.out.println("erreur cryptage : bloc de taille " + bloc.length);
+				}
 				}
 			
 			int[] recolle = this.recollage_bloc(decoupe);
@@ -368,20 +355,20 @@ public class Des {
 			for(int i = 0; i < decoupe.length; i++) {
 				int[] bloc = decoupe[i];
 				int[] perm = Des.perm_initiale;
-				this.permutation(perm, bloc);
+				bloc = this.permutation(perm, bloc);
 				int[][] decoupe_deux = this.decoupage(bloc, 2);
 				int[] g = decoupe_deux[0];
-				int[] d = decoupe_deux[0];
+				int[] d = decoupe_deux[1];
 				for(int j = 0; j < Des.nb_ronde; j++) {
-					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j+ 1));
-					int[] d_save = d;
-					d = this.xor(g, this.fonction_F(cle, d));
-					d = d_save;
+					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
+					int[] g_save = g;
+					g = this.xor(d, this.fonction_F(cle, g));
+					d = g_save;
 				}
 				decoupe_deux[0] = g;
 				decoupe_deux[1] = d;
 				bloc = this.recollage_bloc(decoupe_deux);
-				this.invPermutation(perm, bloc);
+				bloc = this.invPermutation(perm, bloc);
 				decoupe[i] = bloc;
 			}
 			
