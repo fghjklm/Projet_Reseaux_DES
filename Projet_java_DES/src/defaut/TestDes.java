@@ -19,33 +19,6 @@ public class TestDes {
 	public void setUp() throws Exception {
 		des = new Des();
 		rnd=new Random();
-
-		
-		/*
-        
-
-		//test decale-gauche:
-		int[] blocs= {1,2,3,4,5,6,8,56,12,0,7,8,9,10};
-		int[] decalle=des.decalle_gauche(blocs, 25);
-		//des.afficher_tab(decalle);
-		
-		
-		
-		
-
-		int[] blocs = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-		int[][] blocs2 = {{1, 2, 3, 4, 5, 6}, {7, 8, 9, 10, 11, 12}};
-		des.afficher_tab(blocs);
-		des.afficher_tab_tab(blocs2);
-		des.afficher_tab_tab(des.decoupage(blocs, 6));
-		des.afficher_tab(des.recollage_bloc(des.decoupage(blocs, 4)));
-		
-		System.out.print(des.decoupage(blocs, 2).equals(blocs2));
-		
-		
-		
-		*/
-		
 	}
 	
 	@After
@@ -111,18 +84,68 @@ public class TestDes {
 	}
 	
 	@Test
-	public void testDecoupage() {
-		//fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testRecollage_bloc() {
-		//fail("Not yet implemented");
+	public void testDecoupage_testRecollageBloc() {
+		int[] tailles= {48,64};
+		
+		for (int taille : tailles) {
+			
+			int[] bloc=new int[taille];
+			
+			for (int j=0; j<taille; j++) {
+				bloc[j]=j+1;
+			}
+			
+			for (int i=0; i<100;i++) {
+
+				int[] permut=des.generePermutation(taille);
+				int[] blocPermute=des.permutation(permut, bloc);
+				int[] blocATester=blocPermute.clone();
+				
+				for (int nbBlocs=1; nbBlocs<taille+1;nbBlocs++) {
+					if (taille%nbBlocs==0) {
+						
+						int[][] blocDecoupe=des.decoupage(blocATester, nbBlocs);
+						int[] blocRecolle=des.recollage_bloc(blocDecoupe);
+						
+						assertTrue(Arrays.equals(blocPermute, blocRecolle));
+					}
+				}
+			}
+		}
 	}
 	
 	@Test
 	public void testDecalle_gauche() {
-		//fail("Not yet implemented");
+		
+		int[] bloc= new int[28];
+		for (int i=0;i<28;i++) {
+			bloc[i]=i+1;
+		}
+		
+		for (int j=0; j<100;j++) {
+			int decallage=rnd.nextInt(28)+1;
+			//choisir un décalage en random
+			//décaler
+			
+			//créer le bloc décallé en profitant du fait qu'on sais de quoi il est rempli
+			int[] verif=new int[28];
+			for (int k=0; k<28;k++) {
+				verif[k]=(k-decallage);
+			}
+			
+			//tester que les deux sont égaux
+			
+			
+			
+		}
+		
+		
+		
+		int[] blocs= {1,2,3,4,5,6,8,56,12,0,7,8,9,10};
+		int[] decalle=des.decalle_gauche(blocs, 25);
+		
+		
+		//des.afficher_tab(decalle);
 	}
 	
 	@Test
@@ -146,12 +169,7 @@ public class TestDes {
 	}
 	
 	@Test
-	public void testCrypte() {
-		//fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testDecrypte() {
+	public void testCrypte_testDecrypte() {
 		//fail("Not yet implemented");
 	}
 	
