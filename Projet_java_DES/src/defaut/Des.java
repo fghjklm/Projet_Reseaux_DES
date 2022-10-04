@@ -92,12 +92,28 @@ public class Des {
 	
 	public int[] stringToBits(String message) {
 		
+		byte[] tableau2 = message.getBytes(StandardCharsets.ISO_8859_1);
+		
+		//parcourir tableau et transformer chaque code ascii en code binaire
+		System.out.println(tableau2[0]);
+		System.out.println(Integer.toBinaryString(tableau2[0]).length());
+		
+		
+		
+		
+		//fin du test
+		
 		byte[] tableau = message.getBytes(StandardCharsets.US_ASCII);
+		
 		int[] tab_int = new int[tableau.length];
 		for(int i = 0; i<tableau.length; i++ ) {
 			tab_int[i] = (int)tableau[i];
 		}
+		
+		
 		int[] tab_binaire = new int[tab_int.length*8];
+		
+		
 		for(int i =0; i < tab_int.length; i++) {
 			int entier = tab_int[i];
 			for(int j = 7; j >=0; j--) {
@@ -276,7 +292,6 @@ public class Des {
 		while(valeurBinaire.length()<4){
 			valeurBinaire = "0"+valeurBinaire;
 		}
-		System.out.println(valeurBinaire);
 		for (int i=0; i<nouveau_tab.length;i++) {
 			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
