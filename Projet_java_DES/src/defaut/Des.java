@@ -298,7 +298,6 @@ public class Des {
 		return recolle_total;
 		
 	}
-	
 	String decrypte(int[] messageCode) {
 		int taille = messageCode.length;
 		int nb_bloc = taille/Des.taille_bloc;
