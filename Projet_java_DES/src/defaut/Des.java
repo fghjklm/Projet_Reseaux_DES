@@ -43,8 +43,8 @@ public class Des {
 			this.masterKey[i]=r.nextInt(2);
 		}
 		this.tab_cles = new ArrayList<int[]>();
-		Des.s = this.creerS();
 		Des.s_tab = new int[nb_ronde][][];
+		Des.s = this.creerS();
 		
 		
 	}
@@ -321,6 +321,14 @@ public class Des {
 					int[] d = decoupe_deux[1];
 					///
 					for(int i = 0; i < Des.nb_ronde; i++) {
+						if(k ==0) {
+							int[][] s_local = this.creerS();
+							Des.s_tab[i] = s_local;
+							Des.s = s_local;
+						}
+						else {
+							Des.s = Des.s_tab[i];
+						}
 						int[] cle = this.genereCle(i+1);
 						this.tab_cles.add(cle);
 						int[] d_save = d;
@@ -345,6 +353,7 @@ public class Des {
 			decoupe_total[1] = tab_non_crypte;
 			int [] recolle_total = this.recollage_bloc(decoupe_total);	
 			return recolle_total;
+			
 			
 		}
 		else {
@@ -376,6 +385,9 @@ public class Des {
 				int[] g = decoupe_deux[0];
 				int[] d = decoupe_deux[1];
 				for(int j = 0; j < Des.nb_ronde; j++) {
+					
+					int[][] s_local = Des.s_tab[Des.nb_ronde - j-1];
+					Des.s = s_local;
 					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
 					int[] g_save = g;
 					g = this.xor(d, this.fonction_F(cle, g));
