@@ -270,6 +270,7 @@ public class Des {
 		int[][] decoupe = this.decoupage(tab_a_crypte, nb_bloc);
 		for(int[] bloc : decoupe) {
 			int[] perm = this.generePermutation(Des.taille_bloc);
+			this.tab_cles.add(perm);
 			this.permutation(perm, bloc);
 			int[][] decoupe_deux = this.decoupage(bloc, 2);
 			int[] g = decoupe_deux[0];
@@ -295,6 +296,49 @@ public class Des {
 		int [] recolle_total = this.recollage_bloc(decoupe_total);		
 		
 		return recolle_total;
+		
+	}
+	
+	String decrypte(int[] messageCode) {
+		int taille = messageCode.length;
+		int nb_bloc = taille/Des.taille_bloc;
+		int [] tab_a_decrypte = new int[nb_bloc*Des.taille_bloc];
+		int[] tab_non_crypte = new int[taille-nb_bloc*Des.taille_bloc];
+		for(int i = 0; i <taille; i++) {
+			if ( i < nb_bloc*Des.taille_bloc) {
+				tab_a_decrypte[i] = messageCode[i];
+			}
+			else {
+				tab_non_crypte[i-nb_bloc*Des.taille_bloc] = messageCode[i];
+			}
+		}
+		int[][] decoupe = this.decoupage(tab_a_decrypte, nb_bloc);
+		for(int i = 0; i < decoupe.length; i++) {
+			int[] bloc = decoupe[i];
+			int[] perm = this.tab_cles.get(i*(Des.nb_ronde + 1));
+			this.permutation(this.tab_cles.get(i*(Des.nb_ronde + 1)), bloc);
+			int[][] decoupe_deux = this.decoupage(bloc, 2);
+			int[] g = decoupe_deux[0];
+			int[] d = decoupe_deux[0];
+			for(int j = 0; j < Des.nb_ronde; j++) {
+				int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde + 1) - (j+ 1));
+				int[] g_save = d;
+				d = this.xor(g, this.fonction_F(cle, d));
+				d = g_save;
+			}
+			decoupe_deux[0] = g;
+			decoupe_deux[1] = d;
+			bloc = this.recollage_bloc(decoupe_deux);
+			this.invPermutation(perm, bloc);
+		}
+		
+		int[] recolle = this.recollage_bloc(decoupe);
+		int[][] decoupe_total = new int[2][];
+		decoupe_total[0] = recolle;
+		decoupe_total[1] = tab_non_crypte;
+		int [] recolle_total = this.recollage_bloc(decoupe_total);	
+		
+		return this.bitsToString(recolle_total);
 		
 	}
 }
