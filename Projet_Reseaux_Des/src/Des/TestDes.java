@@ -170,12 +170,17 @@ public class TestDes {
 		//cas avec caractères spéciaux :
 		Des des2=new Des();
 		String avec = "j'ai très très bien mange aujourdhui, et vous ? hmmm";
-		int[] crypteA = des2.crypte(avec);
-		String decrypteA = des2.decrypte(crypteA);
+		int[] crypteA = des.crypte(avec);
+		String decrypteA = des.decrypte(crypteA);
+		
+		TripleDes triple = new TripleDes();
+		int [] crypteB = triple.crypter(sans);
+		String decrypteB = triple.decrypter(crypteB);
 		
 		//assertEquals(s2,decrypte2);
 		System.out.println(avec);
 		System.out.println(decrypteA);
+		System.out.println(decrypteB);
 		System.out.println("fin2");
 	}
 	

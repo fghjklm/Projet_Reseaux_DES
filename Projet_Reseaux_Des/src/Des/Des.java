@@ -54,7 +54,7 @@ public class Des {
 		
 	}
 	
-	int[][] creerS(){
+	private int[][] creerS(){
 		Random rnd=new Random();
 		int[][] s = new int[4][16];
 		HashSet<Integer> dejaPlace;
@@ -143,7 +143,7 @@ public class Des {
 		
 		return tab_binaire;
 	}
-	public String bitsToString(int[] blocs) {
+	 String bitsToString(int[] blocs) {
 		assert(blocs.length%8 == 0);
 		int [] tab_int = new int[blocs.length/8];
 		for(int i = 0; i < tab_int.length; i++) {
@@ -161,7 +161,7 @@ public class Des {
 	}
 
 	
-	public int[] generePermutation (int taille) {
+	 int[] generePermutation (int taille) {
 		Random rnd=new Random();
 		int[] permutation= new int[taille];
 		HashSet<Integer> dejaPlace=new HashSet<Integer>();
@@ -182,7 +182,7 @@ public class Des {
 	}
 	
 	
-	public int[] permutation(int[] tab_permutation, int[] bloc) {
+	 int[] permutation(int[] tab_permutation, int[] bloc) {
 		int[] blocPermute=new int[tab_permutation.length];
 		for (int i=0;i<tab_permutation.length;i++) {
 			blocPermute[i]=bloc[tab_permutation[i]-1];
@@ -191,7 +191,7 @@ public class Des {
 		return blocPermute;
 	}
 	
-	public int [][] decoupage (int[] bloc, int nbBlocs){
+	 int [][] decoupage (int[] bloc, int nbBlocs){
 		assert(bloc.length%nbBlocs == 0);
 		int[][] découpage = new int[nbBlocs][bloc.length/nbBlocs];
 		for(int i = 0; i < nbBlocs; i++) {
@@ -206,7 +206,7 @@ public class Des {
 		
 	}
 	
-	public int[] recollage_bloc(int[][] blocs) {
+	 int[] recollage_bloc(int[][] blocs) {
 		int[] taille = new int[blocs.length];
 		taille[0] = 0;
 		for(int i = 1; i < blocs.length; i++) {
@@ -324,7 +324,7 @@ public class Des {
 		
 	}
 	
-	int [] crypte( String message) {
+	public int [] crypte( String message) {
 		int[] texte_binaire = this.stringToBits(message);
 		int taille = texte_binaire.length;
 		int nb_bloc = taille/Des.taille_bloc;
@@ -386,7 +386,7 @@ public class Des {
 		
 	}
 	
-	int [] crypte( int[] messageCode) {
+	public int [] crypte( int[] messageCode) {
 		int taille = messageCode.length;
 		int nb_bloc = taille/Des.taille_bloc;
 		int [] tab_a_crypte = new int[nb_bloc*Des.taille_bloc];
@@ -445,7 +445,7 @@ public class Des {
 		}	
 	}
 	
-	String decrypte(int[] messageCode) {
+	public String decrypte(int[] messageCode) {
 		int taille = messageCode.length;
 		int nb_bloc = taille/Des.taille_bloc;
 		int [] tab_a_decrypte = new int[nb_bloc*Des.taille_bloc];
@@ -498,7 +498,7 @@ public class Des {
 		
 	}
 	
-	int[] decrypteTableau(int[] messageCode) {
+	public int[] decrypteTableau(int[] messageCode) {
 		int taille = messageCode.length;
 		int nb_bloc = taille/Des.taille_bloc;
 		int [] tab_a_decrypte = new int[nb_bloc*Des.taille_bloc];
@@ -522,9 +522,9 @@ public class Des {
 				int[] d = decoupe_deux[1];
 				for(int j = 0; j < Des.nb_ronde; j++) {
 					
-					int[][] s_local = this.s_tab[Des.nb_ronde - j-1];
+					int[][] s_local = this.s_tab[Des.nb_ronde - j - 1];
 					this.s = s_local;
-					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
+					int[] cle = this.tab_cles.get(Des.nb_ronde -j - 1);
 					int[] g_save = g;
 					g = this.xor(d, this.fonction_F(cle, g));
 					d = g_save;

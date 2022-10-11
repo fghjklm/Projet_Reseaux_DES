@@ -19,12 +19,12 @@ public class TripleDes {
 	}
 	
 	public int[] crypter(String message) {
-		return this.des3.crypte(this.des2.crypte(this.des1.crypte(message)));
+		return this.des1.crypte(this.des2.crypte(this.des3.crypte(message)));
 		
 	}
 	
 	public String decrypter(int[] messageCode) {
-		return this.des1.decrypte(this.des2.decrypteTableau(this.des2.decrypteTableau(messageCode)));
+		return this.des3.decrypte(this.des2.decrypteTableau(this.des1.decrypteTableau(messageCode)));
 	}
 
 }
