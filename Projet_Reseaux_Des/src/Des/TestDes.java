@@ -140,71 +140,17 @@ public class TestDes {
 		assertTrue(Arrays.equals(Tun, Dun));
 		assertTrue(Arrays.equals(Tcinq, Dcinq));
 		assertTrue(Arrays.equals(bloc, Dmax));
-		
-		/*
-		
-		//tests unitaires
-		
-		int[] bloc= new int[28];
-		for (int i=0;i<28;i++) {
-			bloc[i]=i+1;
-		}
-		
-		for (int j=0; j<100;j++) {
-			int decallage=rnd.nextInt(28)+1;
-			
-			
-			int[] blocDecalle=des.decalle_gauche(bloc, decallage);
-			
-			int[] verif=new int[28];
-			for (int k=decallage; k<28;k++) {
-				verif[k-decallage]=bloc[k];
-			}
-			for (int l=0;l<decallage;l++) {
-				verif[l+bloc.length-decallage]=bloc[l];
-			}
-			
-			assertTrue(Arrays.equals(blocDecalle, verif));
-			
-			//pas sûr que ça soit bon, peut être faire des tests unitaires!!!! car là j'utilise juste deux méthodes pour décaller
-			//et je vérifie juste que ces deux méthodes renvoient le même résultat, pas que c'est bien décallé (même si moi visuellement je le vois)
-			 * 
-			 
-		}
-		*/
 	}
 	
 	@Test
 	public void testXor() {
-		//tests unitaires à la piccinini car sinon on doit juste recoder la même chose que l'intérieur de la méthode
-	}
-
-	
-	@Test
-	public void testFonction_S() {
-		/*
-		int valeur=14;
-		int[] nouveau_tab=new int[4];
+		int[] tab1= {1,1,0,1,0,1,1,0,0,1};
+		int[] tab2= {0,1,0,0,1,1,0,0,0,1};
 		
+		int[] resultat= {1,0,0,1,1,0,1,0,0,0};
 		
-		
-		String valeurBinaire= Integer.toBinaryString(valeur);
-		
-		for (int i=0; i<nouveau_tab.length;i++) {
-			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
-		}
-		
-		des.afficher_tab(nouveau_tab);
-		*/
-		
-		
-		
-		//fail("Not yet implemented");
-	}
-	
-	@Test
-	public void testFonction_F() {
-		//fail("Not yet implemented");
+		assertTrue(Arrays.equals(des.xor(tab1, tab2), resultat));
+		//rajouter quelques tests
 	}
 	
 	@Test
