@@ -1,4 +1,4 @@
-package defaut;
+package Des;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ public class Des {
 		59, 51, 43, 35, 27, 19, 11, 3,
 		61, 53, 45, 37, 29, 21, 13, 5,
 		63, 55, 47, 39, 31, 23, 15, 7};
-	private static int[][] s;
-	private static int[][][] s_tab;
+	private int[][] s;
+	private int[][][] s_tab;
 
 	private static int[] e = 
 		{32, 1, 2 ,3, 4, 5, 
@@ -43,8 +43,13 @@ public class Des {
 			this.masterKey[i]=r.nextInt(2);
 		}
 		this.tab_cles = new ArrayList<int[]>();
-		Des.s_tab = new int[nb_ronde][][];
-		Des.s = this.creerS();
+		this.s_tab = new int[nb_ronde][][];
+		for(int i = 0; i < Des.nb_ronde; i++) {
+			this.s_tab[i] = this.creerS();
+			int[] cle = this.genereCle(i+1);
+			this.tab_cles.add(cle);
+		}
+		this.s = this.creerS();
 		
 		
 	}
@@ -265,7 +270,7 @@ public class Des {
 	int [] fonction_S(int[] tab) {
 		int lig = tab[0]*2 + tab[5];
 		int col = tab[1]*8+tab[2]*4+tab[3]*2 +tab[4];
-		int valeur = Des.s[lig][col];
+		int valeur = this.s[lig][col];
 		int[] nouveau_tab = new int[4];
 		
 		String valeurBinaire= Integer.toBinaryString(valeur);
@@ -321,22 +326,8 @@ public class Des {
 					int[] d = decoupe_deux[1];
 					///
 					for(int i = 0; i < Des.nb_ronde; i++) {
-						if(k ==0) {
-							if(Des.s_tab[i] == null) {
-								int[][] s_local = this.creerS();
-								Des.s_tab[i] = s_local;
-								Des.s = s_local;	
-							}
-							else {
-								System.out.println(Des.s_tab[i]);
-							}
-										
-						}
-						else {
-							Des.s = Des.s_tab[i];
-						}
-						int[] cle = this.genereCle(i+1);
-						this.tab_cles.add(cle);
+						this.s = this.s_tab[i];
+						int[] cle = this.tab_cles.get(i);
 						int[] d_save = d;
 						d = this.xor(g, this.fonction_F(cle, d));
 						g = d_save;
@@ -396,18 +387,8 @@ public class Des {
 					int[] d = decoupe_deux[1];
 					///
 					for(int i = 0; i < Des.nb_ronde; i++) {
-						if(k ==0) {
-							if(Des.s_tab[i] == null) {
-								int[][] s_local = this.creerS();
-								Des.s_tab[i] = s_local;
-								Des.s = s_local;	
-							}
-						}
-						else {
-							Des.s = Des.s_tab[i];
-						}
-						int[] cle = this.genereCle(i+1);
-						this.tab_cles.add(cle);
+						this.s = this.s_tab[i];
+						int[] cle = this.tab_cles.get(i);
 						int[] d_save = d;
 						d = this.xor(g, this.fonction_F(cle, d));
 						g = d_save;
@@ -462,9 +443,9 @@ public class Des {
 				int[] d = decoupe_deux[1];
 				for(int j = 0; j < Des.nb_ronde; j++) {
 					
-					int[][] s_local = Des.s_tab[Des.nb_ronde - j-1];
-					Des.s = s_local;
-					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
+					int[][] s_local = this.s_tab[Des.nb_ronde - j - 1];
+					this.s = s_local;
+					int[] cle = this.tab_cles.get(Des.nb_ronde -j - 1);
 					int[] g_save = g;
 					g = this.xor(d, this.fonction_F(cle, g));
 					d = g_save;
@@ -515,8 +496,8 @@ public class Des {
 				int[] d = decoupe_deux[1];
 				for(int j = 0; j < Des.nb_ronde; j++) {
 					
-					int[][] s_local = Des.s_tab[Des.nb_ronde - j-1];
-					Des.s = s_local;
+					int[][] s_local = this.s_tab[Des.nb_ronde - j-1];
+					this.s = s_local;
 					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
 					int[] g_save = g;
 					g = this.xor(d, this.fonction_F(cle, g));
