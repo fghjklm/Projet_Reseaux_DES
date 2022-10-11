@@ -37,7 +37,7 @@ public class Des {
 	private ArrayList<int[]> tab_cles;
 	
 	public Des(){
-		this.masterKey = new int[64];
+		this.masterKey = new int[Des.taille_bloc];
 		Random r = new Random();
 		for (int i = 0; i< this.masterKey.length; i++) {
 			this.masterKey[i]=r.nextInt(2);
@@ -313,7 +313,7 @@ public class Des {
 			int[][] decoupe = this.decoupage(tab_a_crypte, nb_bloc);
 			for(int k = 0; k < decoupe.length; k++) {
 				int[] bloc = decoupe[k];
-				if(bloc.length == 64) {
+				if(bloc.length == Des.taille_bloc) {
 					int[] perm = Des.perm_initiale;
 					bloc = this.permutation(perm, bloc);
 					int[][] decoupe_deux = this.decoupage(bloc, 2);
@@ -362,6 +362,74 @@ public class Des {
 		
 		
 	}
+	
+	int [] crypte( int[] messageCode) {
+		int taille = messageCode.length;
+		int nb_bloc = taille/Des.taille_bloc;
+		int [] tab_a_crypte = new int[nb_bloc*Des.taille_bloc];
+		int[] tab_non_crypte = new int[taille-nb_bloc*Des.taille_bloc];
+		for(int i = 0; i <taille; i++) {
+			if ( i < nb_bloc*Des.taille_bloc) {
+				tab_a_crypte[i] = messageCode[i];
+			}
+			else {
+				tab_non_crypte[i-nb_bloc*Des.taille_bloc] = messageCode[i];
+			}
+			
+		}
+		/// séparation en un bloc divisible par 64 et un bloc restant, ce dernier n'étant pas crypté
+		if(nb_bloc > 0) {
+			int[][] decoupe = this.decoupage(tab_a_crypte, nb_bloc);
+			for(int k = 0; k < decoupe.length; k++) {
+				int[] bloc = decoupe[k];
+				if(bloc.length == Des.taille_bloc) {
+					int[] perm = Des.perm_initiale;
+					bloc = this.permutation(perm, bloc);
+					int[][] decoupe_deux = this.decoupage(bloc, 2);
+					int[] g = decoupe_deux[0];
+					int[] d = decoupe_deux[1];
+					///
+					for(int i = 0; i < Des.nb_ronde; i++) {
+						if(k ==0) {
+							int[][] s_local = this.creerS();
+							Des.s_tab[i] = s_local;
+							Des.s = s_local;
+						}
+						else {
+							Des.s = Des.s_tab[i];
+						}
+						int[] cle = this.genereCle(i+1);
+						this.tab_cles.add(cle);
+						int[] d_save = d;
+						d = this.xor(g, this.fonction_F(cle, d));
+						g = d_save;
+					}
+					///
+					decoupe_deux[0] = g;
+					decoupe_deux[1] = d;
+					bloc = this.recollage_bloc(decoupe_deux);;
+					bloc = this.invPermutation(perm, bloc);
+					decoupe[k] = bloc;
+				}
+				else {
+					System.out.println("erreur cryptage : bloc de taille " + bloc.length);
+				}
+				}
+			
+			int[] recolle = this.recollage_bloc(decoupe);
+			int[][] decoupe_total = new int[2][];
+			decoupe_total[0] = recolle;
+			decoupe_total[1] = tab_non_crypte;
+			int [] recolle_total = this.recollage_bloc(decoupe_total);	
+			return recolle_total;
+			
+			
+		}
+		else {
+			return tab_non_crypte;
+		}	
+	}
+	
 	String decrypte(int[] messageCode) {
 		int taille = messageCode.length;
 		int nb_bloc = taille/Des.taille_bloc;
@@ -410,6 +478,59 @@ public class Des {
 		}
 		else {
 			return this.bitsToString(tab_non_crypte);
+		}
+		
+		
+	}
+	
+	int[] decrypteTableau(int[] messageCode) {
+		int taille = messageCode.length;
+		int nb_bloc = taille/Des.taille_bloc;
+		int [] tab_a_decrypte = new int[nb_bloc*Des.taille_bloc];
+		int[] tab_non_crypte = new int[taille-nb_bloc*Des.taille_bloc];
+		for(int i = 0; i <taille; i++) {
+			if ( i < nb_bloc*Des.taille_bloc) {
+				tab_a_decrypte[i] = messageCode[i];
+			}
+			else {
+				tab_non_crypte[i-nb_bloc*Des.taille_bloc] = messageCode[i];
+			}
+		}
+		if (nb_bloc > 0 ) {
+			int[][] decoupe = this.decoupage(tab_a_decrypte, nb_bloc);
+			for(int i = 0; i < decoupe.length; i++) {
+				int[] bloc = decoupe[i];
+				int[] perm = Des.perm_initiale;
+				bloc = this.permutation(perm, bloc);
+				int[][] decoupe_deux = this.decoupage(bloc, 2);
+				int[] g = decoupe_deux[0];
+				int[] d = decoupe_deux[1];
+				for(int j = 0; j < Des.nb_ronde; j++) {
+					
+					int[][] s_local = Des.s_tab[Des.nb_ronde - j-1];
+					Des.s = s_local;
+					int[] cle = this.tab_cles.get((i+1)*(Des.nb_ronde) - (j + 1));
+					int[] g_save = g;
+					g = this.xor(d, this.fonction_F(cle, g));
+					d = g_save;
+				}
+				decoupe_deux[0] = g;
+				decoupe_deux[1] = d;
+				bloc = this.recollage_bloc(decoupe_deux);
+				bloc = this.invPermutation(perm, bloc);
+				decoupe[i] = bloc;
+			}
+			
+			int[] recolle = this.recollage_bloc(decoupe);
+			int[][] decoupe_total = new int[2][];
+			decoupe_total[0] = recolle;
+			decoupe_total[1] = tab_non_crypte;
+			int [] recolle_total = this.recollage_bloc(decoupe_total);	
+			return recolle_total;
+			
+		}
+		else {
+			return tab_non_crypte;
 		}
 		
 		
