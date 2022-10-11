@@ -75,7 +75,7 @@ public class Des {
 		return s;
 	}
 	
-	public int[] stringToBits(String message) {
+	int[] stringToBits(String message) {
 		
 		byte[] tableau2 = message.getBytes(StandardCharsets.ISO_8859_1);
 		
