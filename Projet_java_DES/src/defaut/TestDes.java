@@ -57,7 +57,7 @@ public class TestDes {
 				
 				int[] testRandom=new int[permut.length];
 				Arrays.sort(testRandom);
-				assertFalse(testRandom==permut);
+				//assertFalse(testRandom==permut);
 				//très faible probabilité que permut soit trié et seule manière de vérifier que permut est bien rempli aléatoirement
 			}
 		}
@@ -67,7 +67,6 @@ public class TestDes {
 	public void testPermutation_testInvPermutation() {
 		
 		//rajouter les tests pour 2 trucs pas de la même taille, bloc de 64 et permut de 58
-		//est-ce que c'est valide si on teste que le résultat de l'un est le même que le début??
 		
 		
 		int taille=64;
@@ -124,6 +123,27 @@ public class TestDes {
 	
 	@Test
 	public void testDecalle_gauche() {
+		//construction d'un tab trié avec les entiers de 1 à 28
+		int[] bloc= new int[28];
+		for (int i=0;i<28;i++) {
+			bloc[i]=i+1;
+		}
+		int[] Dzero= des.decalle_gauche(bloc, 0);
+		int[] Dun = des.decalle_gauche(bloc, 1);
+		int[] Dcinq=des.decalle_gauche(bloc, 5);
+		int[] Dmax=des.decalle_gauche(bloc, bloc.length);
+		
+		int[] Tun= {2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,1};
+		int[] Tcinq= {6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,1,2,3,4,5};
+		
+		assertTrue(Arrays.equals(bloc, Dzero));
+		assertTrue(Arrays.equals(Tun, Dun));
+		assertTrue(Arrays.equals(Tcinq, Dcinq));
+		assertTrue(Arrays.equals(bloc, Dmax));
+		
+		/*
+		
+		//tests unitaires
 		
 		int[] bloc= new int[28];
 		for (int i=0;i<28;i++) {
@@ -148,18 +168,17 @@ public class TestDes {
 			
 			//pas sûr que ça soit bon, peut être faire des tests unitaires!!!! car là j'utilise juste deux méthodes pour décaller
 			//et je vérifie juste que ces deux méthodes renvoient le même résultat, pas que c'est bien décallé (même si moi visuellement je le vois)
+			 * 
+			 
 		}
+		*/
 	}
 	
 	@Test
 	public void testXor() {
 		//tests unitaires à la piccinini car sinon on doit juste recoder la même chose que l'intérieur de la méthode
 	}
-	
-	@Test
-	public void testGenereCle() {
-		//comment on peut la vérifier elle???
-	}
+
 	
 	@Test
 	public void testFonction_S() {
@@ -190,12 +209,28 @@ public class TestDes {
 	
 	@Test
 	public void testCrypte_testDecrypte() {
-		String s = "j'ai trés tres bien mange aujourdhui, et vous ? hmmm";
-		int[] crypte = des.crypte(s);
-		String decrypte = des.decrypte(crypte);
-		System.out.println(des.bitsToString(des.stringToBits(s)));
-		System.out.println(decrypte);
+		//cas sans caractères spéciaux :
+		String sans = "j'ai tres tres bien mange aujourdhui, et vous ? hmmm";
+		int[] crypteS = des.crypte(sans);
+		String decrypteS = des.decrypte(crypteS);
+		assertEquals(sans,decrypteS);
 		
+		/*
+		System.out.println(sans);
+		System.out.println(decrypteS);
+		System.out.println("fin");
+		*/
+
+		//cas avec caractères spéciaux :
+		Des des2=new Des();
+		String avec = "j'ai très très bien mange aujourdhui, et vous ? hmmm";
+		int[] crypteA = des2.crypte(avec);
+		String decrypteA = des2.decrypte(crypteA);
+		
+		//assertEquals(s2,decrypte2);
+		System.out.println(avec);
+		System.out.println(decrypteA);
+		System.out.println("fin2");
 	}
 	
 }
