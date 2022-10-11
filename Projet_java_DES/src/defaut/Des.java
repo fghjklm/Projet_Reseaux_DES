@@ -322,9 +322,15 @@ public class Des {
 					///
 					for(int i = 0; i < Des.nb_ronde; i++) {
 						if(k ==0) {
-							int[][] s_local = this.creerS();
-							Des.s_tab[i] = s_local;
-							Des.s = s_local;
+							if(Des.s_tab[i] == null) {
+								int[][] s_local = this.creerS();
+								Des.s_tab[i] = s_local;
+								Des.s = s_local;	
+							}
+							else {
+								System.out.println(Des.s_tab[i]);
+							}
+										
 						}
 						else {
 							Des.s = Des.s_tab[i];
@@ -391,9 +397,11 @@ public class Des {
 					///
 					for(int i = 0; i < Des.nb_ronde; i++) {
 						if(k ==0) {
-							int[][] s_local = this.creerS();
-							Des.s_tab[i] = s_local;
-							Des.s = s_local;
+							if(Des.s_tab[i] == null) {
+								int[][] s_local = this.creerS();
+								Des.s_tab[i] = s_local;
+								Des.s = s_local;	
+							}
 						}
 						else {
 							Des.s = Des.s_tab[i];
@@ -535,4 +543,5 @@ public class Des {
 		
 		
 	}
+	
 }
