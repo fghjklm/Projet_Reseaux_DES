@@ -26,5 +26,15 @@ public class TripleDes {
 	public String decrypter(int[] messageCode) {
 		return this.des3.decrypte(this.des2.decrypteTableau(this.des1.decrypteTableau(messageCode)));
 	}
+	
+	public String getCles() {
+		String s = "";
+		s+= des1.getCles();
+		s+= "|";
+		s+= des2.getCles();
+		s+= "|";
+		s+= des3.getCles();
+		return s;
+	}
 
 }

@@ -49,8 +49,23 @@ public class Des {
 			int[] cle = this.genereCle(i+1);
 			this.tab_cles.add(cle);
 		}
-		this.s = this.creerS();
+	
 		
+	}
+	public Des(int[] masterkey, ArrayList<int[]> tab_cles, int[][][] s_tab) {	
+		this.masterKey = masterkey;
+		this.tab_cles = tab_cles;
+		this.s_tab = s_tab;
+	}
+	
+	public String getCles() {
+		String s = "";
+		s += tabToString(this.masterKey);
+		s+= ";";
+		s +=tabtabToString(this.tab_cles);
+		s+= ";";
+		s +=tabtabtabToString(this.s_tab);
+		return s;
 		
 	}
 	
@@ -80,12 +95,13 @@ public class Des {
 		byte[] tableau2 = message.getBytes(StandardCharsets.ISO_8859_1);
 		
 		//parcourir tableau et transformer chaque code ascii en code binaire
+		/*
 		System.out.println(tableau2[0]);
 		System.out.println(Integer.toBinaryString(tableau2[0]).length());
 		
 		
 		
-		/*
+		
 		int valeur=14;
 		int[] nouveau_tab=new int[4];
 		
@@ -223,23 +239,44 @@ public class Des {
 		
 	}
 	
-	public void afficher_tab(int[] tab) {
-		String s = "[";
+	public String tabToString(int[] tab) {
+		String s = "";
 		for(int i : tab) {
-			s += String.valueOf(i) + ", ";
+			s += String.valueOf(i) + ",";
 			
 		}
-		s += "]";
-		System.out.println(s);
+		s = s.substring(0, s.length()-1);
+		return s;
 	}
 	
-	public void afficher_tab_tab(int[][] tab_tab) {
-		System.out.println("[");
+	public String tabtabToString(int[][] tab_tab) {
+		String s = "";
 		for(int[] tab : tab_tab) {
-			afficher_tab(tab);
+			s += tabToString(tab) + "[";
 		}
-		System.out.println("]");
+		s = s.substring(0, s.length()-1);
+		return s;
 	}
+	
+	public String tabtabToString(ArrayList<int []> tab_tab) {
+		String s = "";
+		for(int[] tab : tab_tab) {
+			s += tabToString(tab) + "[";
+		}
+		s = s.substring(0, s.length()-1);
+		return s;
+	}
+	
+	public String tabtabtabToString(int[][][] tab_tab_tab) {
+		String s = "";
+		for(int[][] tab_tab : tab_tab_tab) {
+			s += tabtabToString(tab_tab) +"{";
+		}
+		s = s.substring(0, s.length()-1);
+		return s;
+	}
+	
+	
 	
 	
 	
