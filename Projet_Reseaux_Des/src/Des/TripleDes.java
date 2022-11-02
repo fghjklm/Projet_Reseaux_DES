@@ -30,9 +30,9 @@ public class TripleDes {
 	public String getCles() {
 		String s = "";
 		s+= des1.getCles();
-		s+= "|";
+		s+= "a";
 		s+= des2.getCles();
-		s+= "|";
+		s+= "a";
 		s+= des3.getCles();
 		return s;
 	}

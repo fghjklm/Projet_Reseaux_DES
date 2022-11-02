@@ -183,5 +183,4 @@ public class TestDes {
 		System.out.println(decrypteB);
 		System.out.println("fin2");
 	}
-	
 }

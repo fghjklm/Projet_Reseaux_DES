@@ -98,36 +98,15 @@ public class Des {
 		/*
 		System.out.println(tableau2[0]);
 		System.out.println(Integer.toBinaryString(tableau2[0]).length());
-		
-		
-		
-		
 		int valeur=14;
 		int[] nouveau_tab=new int[4];
-		
-		
-		
-		String valeurBinaire= Integer.toBinaryString(valeur);
-		
+	    String valeurBinaire= Integer.toBinaryString(valeur);
 		for (int i=0; i<nouveau_tab.length;i++) {
 			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
 		
 		des.afficher_tab(nouveau_tab);
 		*/
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		//fin du test
 		
 		byte[] tableau = message.getBytes(StandardCharsets.US_ASCII);
@@ -252,7 +231,7 @@ public class Des {
 	public String tabtabToString(int[][] tab_tab) {
 		String s = "";
 		for(int[] tab : tab_tab) {
-			s += tabToString(tab) + "[";
+			s += tabToString(tab) + "b";
 		}
 		s = s.substring(0, s.length()-1);
 		return s;
@@ -261,7 +240,7 @@ public class Des {
 	public String tabtabToString(ArrayList<int []> tab_tab) {
 		String s = "";
 		for(int[] tab : tab_tab) {
-			s += tabToString(tab) + "[";
+			s += tabToString(tab) + "b";
 		}
 		s = s.substring(0, s.length()-1);
 		return s;
@@ -270,7 +249,7 @@ public class Des {
 	public String tabtabtabToString(int[][][] tab_tab_tab) {
 		String s = "";
 		for(int[][] tab_tab : tab_tab_tab) {
-			s += tabtabToString(tab_tab) +"{";
+			s += tabtabToString(tab_tab) +"c";
 		}
 		s = s.substring(0, s.length()-1);
 		return s;
