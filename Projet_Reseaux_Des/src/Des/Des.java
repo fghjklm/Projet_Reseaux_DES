@@ -90,69 +90,36 @@ public class Des {
 		return s;
 	}
 	
-	int[] stringToBits(String message) {
-		
-		byte[] tableau2 = message.getBytes(StandardCharsets.ISO_8859_1);
-		
-		//parcourir tableau et transformer chaque code ascii en code binaire
-		/*
-		System.out.println(tableau2[0]);
-		System.out.println(Integer.toBinaryString(tableau2[0]).length());
-		int valeur=14;
-		int[] nouveau_tab=new int[4];
-	    String valeurBinaire= Integer.toBinaryString(valeur);
-		for (int i=0; i<nouveau_tab.length;i++) {
-			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
+	public int[] stringToBits(String message) {
+		String chaine_binaire="";
+		for (char aChar : message.toCharArray()) {
+			String lettre_binaire = String.format("%8s", Integer.toBinaryString(aChar)).replaceAll(" ", "0") ;
+			// on transforme le lettre en binaire et les espaces deviennent des 0
+			chaine_binaire+=lettre_binaire;
 		}
-		
-		des.afficher_tab(nouveau_tab);
-		*/
-		//fin du test
-		
-		byte[] tableau = message.getBytes(StandardCharsets.US_ASCII);
-		
-		int[] tab_int = new int[tableau.length];
-		for(int i = 0; i<tableau.length; i++ ) {
-			tab_int[i] = (int)tableau[i];
+
+		int[] binaire = new int[chaine_binaire.length()];
+		for(int i=0; i<binaire.length; i++) {
+			binaire[i]=Character.getNumericValue(chaine_binaire.charAt(i));	
 		}
-		
-		
-		int[] tab_binaire = new int[tab_int.length*8];
-		
-		
-		for(int i =0; i < tab_int.length; i++) {
-			int entier = tab_int[i];
-			for(int j = 7; j >=0; j--) {
-				if (entier-Math.pow(2,  j) >= 0){
-					entier = (int) (entier-Math.pow(2, j));
-					tab_binaire[8*i + 7-j] = 1;	
-					
-				}
-				else {
-					tab_binaire[8*i+7-j] = 0;
-				}
-			}
-			assert(entier ==0);
-		}
-		
-		
-		return tab_binaire;
+		return binaire;	
 	}
-	 String bitsToString(int[] blocs) {
-		assert(blocs.length%8 == 0);
-		int [] tab_int = new int[blocs.length/8];
-		for(int i = 0; i < tab_int.length; i++) {
-			int entier = 0;
-			for(int j = 0; j < 8; j++) {
-				entier += Math.pow(2,7-j) *blocs[8*i + j];		
+
+	public String bitsToString(int[] blocs) {
+		String [] string_message=new String [blocs.length/8];
+		String message="";
+		int i,j;
+		for(i=0 ; i<blocs.length/8;i++) {
+			String lettre ="";
+			for(j=i*8 ; j<8+8*i;j++) {
+				lettre+= blocs[j];
 			}
-			tab_int[i] = entier;
+			string_message[i]=lettre;
 		}
-		byte[] tableau = new byte[tab_int.length];
-		for(int i = 0; i < tab_int.length; i++) {
-			tableau[i] = (byte)tab_int[i];
+		for(i=0;i<string_message.length;i++) {
+			message+=(char)Integer.parseInt(string_message[i],2);
 		}
-		return new String(tableau, StandardCharsets.US_ASCII);
+		return message;
 	}
 
 	
@@ -563,8 +530,7 @@ public class Des {
 		else {
 			return tab_non_crypte;
 		}
-		
-		
+			
 	}
 	
 }
