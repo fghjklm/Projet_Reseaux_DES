@@ -36,12 +36,14 @@ public class Des {
 	private ArrayList<int[]> tab_cles;
 
 	public Des(){
+		/// Initialisation de masterKey
 		this.masterKey = new int[Des.taille_bloc];
 		Random r = new Random();
 		
 		for (int i = 0; i< this.masterKey.length; i++) {
 			this.masterKey[i]=r.nextInt(2);
 		}
+		/// Initialisation de tab_cles avec les 16 clés (utilisant genereCle() ) et s_tab avec les 16 tableau S (utilisant creerS() )
 		this.tab_cles = new ArrayList<int[]>();
 		this.s_tab = new int[nb_ronde][][];
 		for(int i = 0; i < Des.nb_ronde; i++) {
@@ -164,15 +166,17 @@ public class Des {
 	}
 
 	int[] recollage_bloc(int[][] blocs) {
-		int[] taille = new int[blocs.length];
-		taille[0] = 0;
+		int[] positions = new int[blocs.length];
+		/// Initialisation d'un tableu de position contenant les positions de départ chaque 
+		///  tableau de blocs dans le tableau recollage
+		positions[0] = 0;
 		for(int i = 1; i < blocs.length; i++) {
-			taille[i] = taille[i-1] + blocs[i-1].length;
+			positions[i] = positions[i-1] + blocs[i-1].length;
 		}
-		int[] recollage = new int[taille[blocs.length -1] + blocs[blocs.length-1].length];
+		int[] recollage = new int[positions[blocs.length -1] + blocs[blocs.length-1].length];
 		for(int i = 0; i < blocs.length;i++) {
 			for(int j = 0; j < blocs[i].length; j++) {
-				recollage[taille[i] + j] = blocs[i][j];
+				recollage[positions[i] + j] = blocs[i][j];
 			}
 		}
 		return recollage;

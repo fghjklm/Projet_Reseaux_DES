@@ -33,8 +33,8 @@ public class FenetreCrypter extends JFrame implements MouseListener {
 		JPanel p1 = new JPanel(new GridLayout(3,1));
 		JPanel p2 = new JPanel(new GridLayout(3,1));
 		this.l1 = new JLabel("Message à crypter :");
-		this.l2 = new JLabel("Nom du fichier contenant le message crypté :");
-		this.l3 = new JLabel("Nom du fichier contenant les clés :");
+		this.l2 = new JLabel("Emplacement du fichier contenant le message crypté :");
+		this.l3 = new JLabel("Emplacement du fichier contenant les clés :");
 		this.jt1 = new JTextField();
 
 		this.b = new JButton("envoyer");
@@ -53,7 +53,7 @@ public class FenetreCrypter extends JFrame implements MouseListener {
 		b.addMouseListener(this);
 		bmessage.addMouseListener(this);
 		bclés.addMouseListener(this);
-		this.setSize(1000,250);
+		this.setSize(800,250);
 		this.setVisible(true);
 	}
 	public String tabToString(int[] tab) {
