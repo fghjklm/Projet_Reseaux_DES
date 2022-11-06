@@ -76,6 +76,7 @@ public class TestDes {
 
 			int[] permutation=des.permutation(tab_permutation, bloc);
 			int[] invPermutation = des.invPermutation(tab_permutation, permutation);
+			assertFalse(Arrays.equals(permutation, invPermutation));
 			assertTrue(Arrays.equals(bloc, invPermutation));
 		}
 

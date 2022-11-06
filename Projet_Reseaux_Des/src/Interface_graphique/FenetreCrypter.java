@@ -44,7 +44,7 @@ public class FenetreCrypter extends JFrame implements MouseListener {
 		this.add(p2,BorderLayout.CENTER);
 		this.add(b,BorderLayout.SOUTH);
 		b.addMouseListener(this);
-		this.setSize(400,250);
+		this.setSize(1000,250);
 		this.setVisible(true);
 	}
 	public String tabToString(int[] tab) {

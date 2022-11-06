@@ -49,8 +49,6 @@ public class Des {
 			int[] cle = this.genereCle(i+1);
 			this.tab_cles.add(cle);
 		}
-
-
 	}
 
 	public Des(int[] masterkey, ArrayList<int[]> tab_cles, int[][][] s_tab) {	
@@ -59,18 +57,18 @@ public class Des {
 		this.s_tab = s_tab;
 	}
 
-	public String getCles() {
+	//impossible de rendre private pour effectuer tests et pas besoin de noter protected pour visibilité package
+	String getCles() {
 		String s = "";
-		s += tabToString(this.masterKey);
+		s += this.tabToString(this.masterKey);
 		s+= ";";
-		s +=tabtabToString(this.tab_cles);
+		s +=this.listTabToString(this.tab_cles);
 		s+= ";";
-		s +=tabtabtabToString(this.s_tab);
+		s +=this.tabTabTabToString(this.s_tab);
 		return s;
-
 	}
 
-	protected int[][] creerS(){
+	int[][] creerS(){
 		Random rnd=new Random();
 		int[][] s = new int[4][16];
 		HashSet<Integer> dejaPlace;
@@ -91,23 +89,23 @@ public class Des {
 		return s;
 	}
 
-	public int[] stringToBits(String message) {
+	int[] stringToBits(String message) {
 		String chaine_binaire="";
-		for (char aChar : message.toCharArray()) {
-			String lettre_binaire = String.format("%8s", Integer.toBinaryString(aChar)).replaceAll(" ", "0") ;
+		for (char caractere : message.toCharArray()) {
+			String lettre_binaire = String.format("%8s", Integer.toBinaryString(caractere)).replaceAll(" ", "0") ;
 			// on transforme le lettre en binaire et les espaces deviennent des 0
 			chaine_binaire+=lettre_binaire;
 		}
 
-		int[] binaire = new int[chaine_binaire.length()];
-		for(int i=0; i<binaire.length; i++) {
-			binaire[i]=Character.getNumericValue(chaine_binaire.charAt(i));	
+		int[] tabBinaire = new int[chaine_binaire.length()];
+		for(int i=0; i<tabBinaire.length; i++) {
+			tabBinaire[i]=Character.getNumericValue(chaine_binaire.charAt(i));	
 		}
-		return binaire;	
+		return tabBinaire;	
 	}
 
-	public String bitsToString(int[] blocs) {
-		String [] string_message=new String [blocs.length/8];
+	String bitsToString(int[] blocs) {
+		String [] tabLettre=new String [blocs.length/8];
 		String message="";
 		int i,j;
 		for(i=0 ; i<blocs.length/8;i++) {
@@ -115,10 +113,10 @@ public class Des {
 			for(j=i*8 ; j<8+8*i;j++) {
 				lettre+= blocs[j];
 			}
-			string_message[i]=lettre;
+			tabLettre[i]=lettre;
 		}
-		for(i=0;i<string_message.length;i++) {
-			message+=(char)Integer.parseInt(string_message[i],2);
+		for(i=0;i<tabLettre.length;i++) {
+			message+=(char)Integer.parseInt(tabLettre[i],2);
 		}
 		return message;
 	}
@@ -139,7 +137,6 @@ public class Des {
 			permutation[indice]=bloc;
 			indice++;
 		}
-
 		return permutation;
 	}
 
@@ -148,22 +145,21 @@ public class Des {
 		for (int i=0;i<tab_permutation.length;i++) {
 			blocPermute[i]=bloc[tab_permutation[i]-1];
 		}
-
 		return blocPermute;
 	}
 
 	int [][] decoupage (int[] bloc, int nbBlocs){
 		assert(bloc.length%nbBlocs == 0);
-		int[][] découpage = new int[nbBlocs][bloc.length/nbBlocs];
+		int[][] decoupage = new int[nbBlocs][bloc.length/nbBlocs];
 		for(int i = 0; i < nbBlocs; i++) {
-			int[] petite_decoupe = new int[bloc.length/nbBlocs];
+			int[] decoupei = new int[bloc.length/nbBlocs];
 			for(int j = 0; j < bloc.length/nbBlocs; j++ ) {
-				petite_decoupe[j] = bloc[i*bloc.length/nbBlocs + j];
+				decoupei[j] = bloc[i*bloc.length/nbBlocs + j];
 			}
-			découpage[i] = petite_decoupe;
+			decoupage[i] = decoupei;
 
 		}
-		return découpage;
+		return decoupage;
 
 	}
 
@@ -179,22 +175,28 @@ public class Des {
 				recollage[taille[i] + j] = blocs[i][j];
 			}
 		}
-
 		return recollage;
-
 	}
 
 	public String tabToString(int[] tab) {
 		String s = "";
 		for(int i : tab) {
 			s += String.valueOf(i) + ",";
-
 		}
 		s = s.substring(0, s.length()-1);
 		return s;
 	}
 
-	public String tabtabToString(int[][] tab_tab) {
+	public String tabTabToString(int[][] tab_tab) {
+		String s = "";
+		for(int[] tab : tab_tab) {
+			s += this.tabToString(tab) + "b";
+		}
+		s = s.substring(0, s.length()-1);
+		return s;
+	}
+
+	public String listTabToString(ArrayList<int []> tab_tab) {
 		String s = "";
 		for(int[] tab : tab_tab) {
 			s += tabToString(tab) + "b";
@@ -203,19 +205,10 @@ public class Des {
 		return s;
 	}
 
-	public String tabtabToString(ArrayList<int []> tab_tab) {
-		String s = "";
-		for(int[] tab : tab_tab) {
-			s += tabToString(tab) + "b";
-		}
-		s = s.substring(0, s.length()-1);
-		return s;
-	}
-
-	public String tabtabtabToString(int[][][] tab_tab_tab) {
+	public String tabTabTabToString(int[][][] tab_tab_tab) {
 		String s = "";
 		for(int[][] tab_tab : tab_tab_tab) {
-			s += tabtabToString(tab_tab) +"c";
+			s += tabTabToString(tab_tab) +"c";
 		}
 		s = s.substring(0, s.length()-1);
 		return s;
@@ -226,14 +219,11 @@ public class Des {
 		for (int i=0;i<tab_permutation.length;i++) {
 			blocPermute[tab_permutation[i]-1]=bloc[i];
 		}
-
 		return blocPermute;
 	}
 
 	int[] decalle_gauche(int[] bloc, int nbCran) {
-
 		int[] decalle=new int[bloc.length];
-
 		for (int i=0; i<bloc.length;i++) {
 			decalle[Math.floorMod(i-nbCran, bloc.length)]=bloc[i];
 		}
@@ -256,16 +246,9 @@ public class Des {
 	int[] xor( int[] tab1, int[] tab2) {
 		int[] tab_xor = new int[tab1.length]; 
 		for(int i =0; i < tab1.length; i++) {
-			if (tab1[i] + tab2[i] == 1) {
-				tab_xor[i] = 1;
-			}
-			else {
-				tab_xor[i] = 0;
-			}
+			tab_xor[i]=Math.abs((tab1[i]-tab2[i]));
 		}
-
 		return tab_xor;
-
 	}
 
 	int [] fonction_S(int[] tab) {
@@ -281,22 +264,19 @@ public class Des {
 		for (int i=0; i<nouveau_tab.length;i++) {
 			nouveau_tab[i]=valeurBinaire.charAt(i)-'0';
 		}
-
 		return nouveau_tab;
-
 	}
 
 	int[] fonction_F(int[] uneCle, int[] unD) {
 
-		int[] e_n = this.permutation(Des.e, unD);
-		int[] d_n_etoile = this.xor(e_n, uneCle);
-		int[][] decoupe = this.decoupage(d_n_etoile, 8);
+		int[] extensionD = this.permutation(Des.e, unD);
+		int[] exentionXorCle = this.xor(extensionD, uneCle);
+		int[][] decoupe = this.decoupage(exentionXorCle, 8);
 		for(int i = 0; i < decoupe.length; i++) {
 			decoupe[i] = fonction_S(decoupe[i]);	
 		}
 		int[] recolle = this.recollage_bloc(decoupe); 
 		return recolle;
-
 	}
 
 	public int [] crypte( String message) {
@@ -320,8 +300,8 @@ public class Des {
 			for(int k = 0; k < decoupe.length; k++) {
 				int[] bloc = decoupe[k];
 				if(bloc.length == Des.taille_bloc) {
-					int[] perm = Des.perm_initiale;
-					bloc = this.permutation(perm, bloc);
+					int[] permut = Des.perm_initiale;
+					bloc = this.permutation(permut, bloc);
 					int[][] decoupe_deux = this.decoupage(bloc, 2);
 					int[] g = decoupe_deux[0];
 					int[] d = decoupe_deux[1];
@@ -329,15 +309,15 @@ public class Des {
 					for(int i = 0; i < Des.nb_ronde; i++) {
 						this.s = this.s_tab[i];
 						int[] cle = this.tab_cles.get(i);
-						int[] d_save = d;
+						int[] d_copy = d.clone();
 						d = this.xor(g, this.fonction_F(cle, d));
-						g = d_save;
+						g = d_copy;
 					}
 					///
 					decoupe_deux[0] = g;
 					decoupe_deux[1] = d;
 					bloc = this.recollage_bloc(decoupe_deux);;
-					bloc = this.invPermutation(perm, bloc);
+					bloc = this.invPermutation(permut, bloc);
 					decoupe[k] = bloc;
 				}
 				else {
@@ -351,14 +331,10 @@ public class Des {
 			decoupe_total[1] = tab_non_crypte;
 			int [] recolle_total = this.recollage_bloc(decoupe_total);	
 			return recolle_total;
-
-
 		}
 		else {
 			return tab_non_crypte;
 		}
-
-
 	}
 
 	public int [] crypte( int[] messageCode) {
@@ -373,7 +349,6 @@ public class Des {
 			else {
 				tab_non_crypte[i-nb_bloc*Des.taille_bloc] = messageCode[i];
 			}
-
 		}
 		/// séparation en un bloc divisible par 64 et un bloc restant, ce dernier n'étant pas crypté
 		if(nb_bloc > 0) {
@@ -390,7 +365,7 @@ public class Des {
 					for(int i = 0; i < Des.nb_ronde; i++) {
 						this.s = this.s_tab[i];
 						int[] cle = this.tab_cles.get(i);
-						int[] d_save = d;
+						int[] d_save = d.clone();
 						d = this.xor(g, this.fonction_F(cle, d));
 						g = d_save;
 					}
@@ -405,15 +380,12 @@ public class Des {
 					System.out.println("erreur cryptage : bloc de taille " + bloc.length);
 				}
 			}
-
 			int[] recolle = this.recollage_bloc(decoupe);
 			int[][] decoupe_total = new int[2][];
 			decoupe_total[0] = recolle;
 			decoupe_total[1] = tab_non_crypte;
 			int [] recolle_total = this.recollage_bloc(decoupe_total);	
 			return recolle_total;
-
-
 		}
 		else {
 			return tab_non_crypte;
@@ -447,7 +419,7 @@ public class Des {
 					int[][] s_local = this.s_tab[Des.nb_ronde - j - 1];
 					this.s = s_local;
 					int[] cle = this.tab_cles.get(Des.nb_ronde -j - 1);
-					int[] g_save = g;
+					int[] g_save = g.clone();
 					g = this.xor(d, this.fonction_F(cle, g));
 					d = g_save;
 				}
@@ -464,13 +436,10 @@ public class Des {
 			decoupe_total[1] = tab_non_crypte;
 			int [] recolle_total = this.recollage_bloc(decoupe_total);	
 			return this.bitsToString(recolle_total);
-
 		}
 		else {
 			return this.bitsToString(tab_non_crypte);
 		}
-
-
 	}
 
 	public int[] decrypteTableau(int[] messageCode) {
@@ -500,7 +469,7 @@ public class Des {
 					int[][] s_local = this.s_tab[Des.nb_ronde - j - 1];
 					this.s = s_local;
 					int[] cle = this.tab_cles.get(Des.nb_ronde -j - 1);
-					int[] g_save = g;
+					int[] g_save = g.clone();
 					g = this.xor(d, this.fonction_F(cle, g));
 					d = g_save;
 				}
@@ -517,12 +486,17 @@ public class Des {
 			decoupe_total[1] = tab_non_crypte;
 			int [] recolle_total = this.recollage_bloc(decoupe_total);	
 			return recolle_total;
-
 		}
 		else {
 			return tab_non_crypte;
 		}
-
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }
