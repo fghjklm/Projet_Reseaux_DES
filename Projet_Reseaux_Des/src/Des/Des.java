@@ -38,6 +38,7 @@ public class Des {
 	public Des(){
 		this.masterKey = new int[Des.taille_bloc];
 		Random r = new Random();
+		
 		for (int i = 0; i< this.masterKey.length; i++) {
 			this.masterKey[i]=r.nextInt(2);
 		}
