@@ -10,8 +10,8 @@ public class TripleDes {
 		des1 = new Des();
 		des2 = new Des();
 		des3 = new Des();
-		
 	}
+	
 	public TripleDes(Des des1, Des des2, Des des3) {
 		this.des1 = des1;
 		this.des2 = des2;
@@ -20,7 +20,6 @@ public class TripleDes {
 	
 	public int[] crypter(String message) {
 		return this.des1.crypte(this.des2.crypte(this.des3.crypte(message)));
-		
 	}
 	
 	public String decrypter(int[] messageCode) {
